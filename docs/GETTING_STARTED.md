@@ -22,10 +22,9 @@ cd qi
 
 ### 2. Set Up Environment Variables
 
-Create a `.env` file in the backend directory:
+Create a `.env` file in the repository root (used by `docker compose`):
 
 ```bash
-cd backend
 cp .env.example .env
 ```
 
@@ -39,6 +38,8 @@ SECRET_KEY=$(openssl rand -hex 32)
 python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 # Copy the output and set it as FERNET_KEY
 ```
+
+Note: `backend/.env.example` is still used for *local* backend development (running the API outside Docker).
 
 ### 3. Start All Services
 
