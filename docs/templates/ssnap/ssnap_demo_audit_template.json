@@ -1,0 +1,691 @@
+{
+  "audit": {
+    "title": "SSNAP-style Stroke Pathway Audit (Demo)",
+    "description": "Demo questionnaire inspired by themes/metrics referenced in ‘SSNAP State of the Nation Report 2025’ (e.g., onset→arrival time, imaging timeliness, hyperacute assessment, thrombolysis/thrombectomy, stroke unit admission, and 6‑month follow-up). This is NOT an official SSNAP instrument and is for demonstration/testing only.",
+    "clinical_domain": "Stroke",
+    "population": "Adults admitted with suspected acute stroke (demo)",
+    "start_date": "2025-04-01",
+    "end_date": "",
+    "governance_body": "Demo only (not official SSNAP)",
+    "data_protection_level": "no_pii",
+    "is_public": false,
+    "require_consent": false,
+    "retention_days": 3650
+  },
+  "questionnaire": {
+    "title": "SSNAP-style Demo Questionnaire v1",
+    "description": "A structured, analysable, SSNAP-style audit form focused on pathway timestamps and key process measures. Intended for demo import into the Audit Builder.",
+    "questions": [
+      {
+        "id": "ssnap_demo_q1",
+        "question_code": "Q1",
+        "question_text": "How was the case classified at discharge?",
+        "question_type": "categorical_single",
+        "help_text": "Select the final discharge classification used locally for this admission.",
+        "clinical_guidance": "Use the discharge diagnosis/category used for reporting.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Confirmed stroke",
+            "Transient ischaemic attack (TIA)",
+            "Stroke mimic",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "discharge_case_classification",
+        "variable_type": "categorical",
+        "variable_description": "Discharge classification for the admission.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q2",
+        "question_code": "Q2",
+        "question_text": "Stroke type (if stroke confirmed)",
+        "question_type": "categorical_single",
+        "help_text": "If Q1 is not ‘Confirmed stroke’, choose the best available classification.",
+        "clinical_guidance": "Based on final clinical/radiological diagnosis.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Ischaemic stroke",
+            "Intracerebral haemorrhage",
+            "Subarachnoid haemorrhage",
+            "Not known / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "stroke_type",
+        "variable_type": "categorical",
+        "variable_description": "Final stroke type classification.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q3",
+        "question_code": "Q3",
+        "question_text": "Was the symptom onset time known?",
+        "question_type": "categorical_single",
+        "help_text": "Known onset means a specific onset datetime can be recorded.",
+        "clinical_guidance": "If unwitnessed/uncertain onset, record ‘No’ and capture last known well instead.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "onset_time_known",
+        "variable_type": "categorical",
+        "variable_description": "Whether symptom onset datetime is known.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q4",
+        "question_code": "Q4",
+        "question_text": "Symptom onset date & time (if known)",
+        "question_type": "datetime",
+        "help_text": "Use 24-hour time. If unknown, leave blank and complete last known well.",
+        "clinical_guidance": "Used for onset→arrival / onset→treatment metrics.",
+        "required": false,
+        "options": null,
+        "validation": null,
+        "conditional_logic": {
+          "depends_on": "Q3",
+          "operator": "equals",
+          "value": "Yes"
+        },
+        "variable_name": "symptom_onset_datetime",
+        "variable_type": "datetime",
+        "variable_description": "Symptom onset datetime (when known).",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q5",
+        "question_code": "Q5",
+        "question_text": "Last known well date & time (if onset not known)",
+        "question_type": "datetime",
+        "help_text": "Record the last time the patient was known to be without stroke symptoms.",
+        "clinical_guidance": "Used for pathway timing when onset is unknown.",
+        "required": false,
+        "options": null,
+        "validation": null,
+        "conditional_logic": {
+          "depends_on": "Q3",
+          "operator": "equals",
+          "value": "No"
+        },
+        "variable_name": "last_known_well_datetime",
+        "variable_type": "datetime",
+        "variable_description": "Last known well datetime (when onset is unknown).",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q6",
+        "question_code": "Q6",
+        "question_text": "Arrival at first hospital date & time",
+        "question_type": "datetime",
+        "help_text": "The time the patient arrived at the first hospital in the pathway.",
+        "clinical_guidance": "Used for arrival-based metrics (e.g., imaging within 20 minutes; stroke unit admission within 4 hours).",
+        "required": true,
+        "options": null,
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "arrival_first_hospital_datetime",
+        "variable_type": "datetime",
+        "variable_description": "Arrival datetime at first hospital.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q7",
+        "question_code": "Q7",
+        "question_text": "Mode of arrival",
+        "question_type": "categorical_single",
+        "help_text": "How the patient arrived at the first hospital.",
+        "clinical_guidance": "Supports pathway analysis and quality improvement.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Emergency ambulance",
+            "Self-presented / private transport",
+            "Inter-hospital transfer",
+            "Inpatient stroke (already admitted)",
+            "Other / unknown"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "arrival_mode",
+        "variable_type": "categorical",
+        "variable_description": "Arrival mode at first hospital.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q8",
+        "question_code": "Q8",
+        "question_text": "Was brain imaging performed?",
+        "question_type": "categorical_single",
+        "help_text": "Select ‘Yes’ if CT/MRI brain imaging occurred for this presentation.",
+        "clinical_guidance": "Imaging timeliness is a key hyperacute process measure.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "brain_imaging_performed",
+        "variable_type": "categorical",
+        "variable_description": "Whether brain imaging occurred.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q9",
+        "question_code": "Q9",
+        "question_text": "Time of first brain imaging (CT/MRI)",
+        "question_type": "datetime",
+        "help_text": "Record the datetime the first brain imaging started or was completed (use local convention consistently).",
+        "clinical_guidance": "Supports ‘imaging within 20 minutes of arrival’ style metrics.",
+        "required": false,
+        "options": null,
+        "validation": null,
+        "conditional_logic": {
+          "depends_on": "Q8",
+          "operator": "equals",
+          "value": "Yes"
+        },
+        "variable_name": "first_brain_imaging_datetime",
+        "variable_type": "datetime",
+        "variable_description": "Datetime of first brain imaging.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q10",
+        "question_code": "Q10",
+        "question_text": "Was a stroke-skilled clinician assessment completed within 1 hour of arrival?",
+        "question_type": "categorical_single",
+        "help_text": "If unsure, choose ‘Unknown’ and record the actual assessment time where possible.",
+        "clinical_guidance": "This is a key hyperacute assessment timeliness measure.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "stroke_assessment_within_1h",
+        "variable_type": "categorical",
+        "variable_description": "Whether stroke-skilled assessment occurred within 1 hour of arrival.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q11",
+        "question_code": "Q11",
+        "question_text": "Time of first stroke-skilled clinician assessment",
+        "question_type": "datetime",
+        "help_text": "If available, enter the documented assessment time.",
+        "clinical_guidance": "Can be used to calculate arrival→assessment time.",
+        "required": false,
+        "options": null,
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "stroke_skilled_assessment_datetime",
+        "variable_type": "datetime",
+        "variable_description": "Datetime of first stroke-skilled clinician assessment.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q12",
+        "question_code": "Q12",
+        "question_text": "Was intravenous thrombolysis administered?",
+        "question_type": "categorical_single",
+        "help_text": "For ischaemic stroke pathway only; choose ‘No’ if not given.",
+        "clinical_guidance": "Used for thrombolysis rates and timing metrics.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "thrombolysis_given",
+        "variable_type": "categorical",
+        "variable_description": "Whether IV thrombolysis was administered.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q13",
+        "question_code": "Q13",
+        "question_text": "Thrombolysis administration date & time",
+        "question_type": "datetime",
+        "help_text": "Record the time thrombolysis was started (bolus time) per local policy.",
+        "clinical_guidance": "Supports door-to-needle / onset-to-needle analyses.",
+        "required": false,
+        "options": null,
+        "validation": null,
+        "conditional_logic": {
+          "depends_on": "Q12",
+          "operator": "equals",
+          "value": "Yes"
+        },
+        "variable_name": "thrombolysis_datetime",
+        "variable_type": "datetime",
+        "variable_description": "Datetime thrombolysis started.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q14",
+        "question_code": "Q14",
+        "question_text": "Door-to-needle time (minutes)",
+        "question_type": "numeric",
+        "help_text": "Minutes from arrival at first hospital to thrombolysis start.",
+        "clinical_guidance": "Numeric timing helps audit improvement and data validation.",
+        "required": false,
+        "options": null,
+        "validation": {
+          "min": 0,
+          "max": 600
+        },
+        "conditional_logic": {
+          "depends_on": "Q12",
+          "operator": "equals",
+          "value": "Yes"
+        },
+        "variable_name": "door_to_needle_minutes",
+        "variable_type": "numeric",
+        "variable_description": "Door-to-needle time in minutes.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q15",
+        "question_code": "Q15",
+        "question_text": "Was mechanical thrombectomy performed?",
+        "question_type": "categorical_single",
+        "help_text": "If the patient was transferred for thrombectomy but it was not performed, select ‘No’.",
+        "clinical_guidance": "Used for thrombectomy rates and pathway timing analyses.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "thrombectomy_performed",
+        "variable_type": "categorical",
+        "variable_description": "Whether mechanical thrombectomy was performed.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q16",
+        "question_code": "Q16",
+        "question_text": "Thrombectomy groin puncture date & time (if performed)",
+        "question_type": "datetime",
+        "help_text": "Record the documented puncture time where available.",
+        "clinical_guidance": "Supports pathway timing analysis for thrombectomy.",
+        "required": false,
+        "options": null,
+        "validation": null,
+        "conditional_logic": {
+          "depends_on": "Q15",
+          "operator": "equals",
+          "value": "Yes"
+        },
+        "variable_name": "thrombectomy_puncture_datetime",
+        "variable_type": "datetime",
+        "variable_description": "Datetime of thrombectomy groin puncture.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q17",
+        "question_code": "Q17",
+        "question_text": "Was the patient taking an anticoagulant on admission?",
+        "question_type": "categorical_single",
+        "help_text": "Include DOACs/warfarin if taken prior to admission.",
+        "clinical_guidance": "Relevant for intracerebral haemorrhage reversal pathways.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "anticoagulant_on_admission",
+        "variable_type": "categorical",
+        "variable_description": "Whether anticoagulant use was present on admission.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q18",
+        "question_code": "Q18",
+        "question_text": "If anticoagulant reversal was indicated, was a reversal agent given within 1 hour of arrival?",
+        "question_type": "categorical_single",
+        "help_text": "If not applicable (e.g., no indication), select ‘Not applicable’.",
+        "clinical_guidance": "Supports hyperacute intervention metrics for intracerebral haemorrhage pathways.",
+        "required": false,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Not applicable",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": {
+          "depends_on": "Q17",
+          "operator": "equals",
+          "value": "Yes"
+        },
+        "variable_name": "reversal_within_1h",
+        "variable_type": "categorical",
+        "variable_description": "Whether reversal agent was given within 1 hour (if indicated).",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q19",
+        "question_code": "Q19",
+        "question_text": "Systolic blood pressure on admission (mmHg)",
+        "question_type": "numeric",
+        "help_text": "Enter the first recorded systolic BP at presentation.",
+        "clinical_guidance": "Supports auditing of BP management pathways (where applicable).",
+        "required": false,
+        "options": null,
+        "validation": {
+          "min": 0,
+          "max": 300
+        },
+        "conditional_logic": null,
+        "variable_name": "admission_systolic_bp_mmhg",
+        "variable_type": "numeric",
+        "variable_description": "First recorded systolic blood pressure on admission.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q20",
+        "question_code": "Q20",
+        "question_text": "If systolic BP > 150mmHg and antihypertensive treatment was indicated, were antihypertensives given within 1 hour of arrival?",
+        "question_type": "categorical_single",
+        "help_text": "Answer ‘Not applicable’ if criteria not met or treatment not indicated.",
+        "clinical_guidance": "Used for hyperacute intervention metrics for intracerebral haemorrhage pathways (where relevant).",
+        "required": false,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Not applicable",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "antihypertensive_within_1h",
+        "variable_type": "categorical",
+        "variable_description": "Whether antihypertensives were given within 1 hour when indicated.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q21",
+        "question_code": "Q21",
+        "question_text": "Time of admission to a stroke unit (if admitted)",
+        "question_type": "datetime",
+        "help_text": "Record the datetime the patient was first admitted to a stroke unit bed.",
+        "clinical_guidance": "Supports ‘direct admission to stroke unit within 4 hours’ style metrics.",
+        "required": false,
+        "options": null,
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "stroke_unit_admission_datetime",
+        "variable_type": "datetime",
+        "variable_description": "Datetime of admission to stroke unit.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q22",
+        "question_code": "Q22",
+        "question_text": "Was the patient directly admitted to a stroke unit within 4 hours of hospital arrival?",
+        "question_type": "categorical_single",
+        "help_text": "If the actual time is unknown, choose ‘Unknown’.",
+        "clinical_guidance": "Stroke unit timeliness is a key pathway measure.",
+        "required": true,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "stroke_unit_within_4h",
+        "variable_type": "categorical",
+        "variable_description": "Whether stroke unit admission occurred within 4 hours.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q23",
+        "question_code": "Q23",
+        "question_text": "Was a swallow screen completed within 4 hours of arrival (where applicable)?",
+        "question_type": "categorical_single",
+        "help_text": "Select ‘Not applicable’ if not applicable locally (e.g., already nil by mouth for another reason).",
+        "clinical_guidance": "Swallow screening is commonly audited as an early inpatient process measure.",
+        "required": false,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Not applicable",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "swallow_screen_within_4h",
+        "variable_type": "categorical",
+        "variable_description": "Whether swallow screen was completed within 4 hours.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q24",
+        "question_code": "Q24",
+        "question_text": "Physiotherapy assessment within 72 hours of admission?",
+        "question_type": "categorical_single",
+        "help_text": "Choose ‘Unknown’ if documentation is unavailable.",
+        "clinical_guidance": "Therapy assessment timing supports service planning and improvement.",
+        "required": false,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "physio_assessed_within_72h",
+        "variable_type": "categorical",
+        "variable_description": "Whether physiotherapy assessment occurred within 72 hours.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q25",
+        "question_code": "Q25",
+        "question_text": "Occupational therapy assessment within 72 hours of admission?",
+        "question_type": "categorical_single",
+        "help_text": "Choose ‘Unknown’ if documentation is unavailable.",
+        "clinical_guidance": "Therapy assessment timing supports service planning and improvement.",
+        "required": false,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "ot_assessed_within_72h",
+        "variable_type": "categorical",
+        "variable_description": "Whether OT assessment occurred within 72 hours.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q26",
+        "question_code": "Q26",
+        "question_text": "Speech and language therapy assessment within 72 hours of admission?",
+        "question_type": "categorical_single",
+        "help_text": "Choose ‘Unknown’ if documentation is unavailable.",
+        "clinical_guidance": "Therapy assessment timing supports service planning and improvement.",
+        "required": false,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "salt_assessed_within_72h",
+        "variable_type": "categorical",
+        "variable_description": "Whether SALT assessment occurred within 72 hours.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q27",
+        "question_code": "Q27",
+        "question_text": "Discharge destination",
+        "question_type": "categorical_single",
+        "help_text": "Select the destination at discharge from the acute admission.",
+        "clinical_guidance": "Supports outcome/service planning analyses.",
+        "required": false,
+        "options": {
+          "choices": [
+            "Home (no formal support)",
+            "Home (with support/care package)",
+            "Inpatient rehabilitation",
+            "Care home / nursing home",
+            "Died in hospital",
+            "Other / unknown"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "discharge_destination",
+        "variable_type": "categorical",
+        "variable_description": "Discharge destination category.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q28",
+        "question_code": "Q28",
+        "question_text": "Was a 6-month follow-up completed (where applicable)?",
+        "question_type": "categorical_single",
+        "help_text": "If your service does not perform 6-month follow-up, select ‘Not applicable’.",
+        "clinical_guidance": "6-month follow-up is commonly reported as a quality/process measure.",
+        "required": false,
+        "options": {
+          "choices": [
+            "Yes",
+            "No",
+            "Not applicable",
+            "Unknown / not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": null,
+        "variable_name": "six_month_followup_completed",
+        "variable_type": "categorical",
+        "variable_description": "Whether a 6-month follow-up was completed.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q29",
+        "question_code": "Q29",
+        "question_text": "6-month follow-up date",
+        "question_type": "date",
+        "help_text": "Record the date the follow-up assessment took place.",
+        "clinical_guidance": "Supports follow-up coverage/timeliness analysis.",
+        "required": false,
+        "options": null,
+        "validation": null,
+        "conditional_logic": {
+          "depends_on": "Q28",
+          "operator": "equals",
+          "value": "Yes"
+        },
+        "variable_name": "six_month_followup_date",
+        "variable_type": "date",
+        "variable_description": "Date of 6-month follow-up.",
+        "validated_instrument": null
+      },
+      {
+        "id": "ssnap_demo_q30",
+        "question_code": "Q30",
+        "question_text": "Modified Rankin Scale (mRS) at 6 months (if recorded)",
+        "question_type": "ordinal",
+        "help_text": "Select the score recorded at 6 months, if your service captures it.",
+        "clinical_guidance": "This field is optional in this demo template; use local governance/definitions.",
+        "required": false,
+        "options": {
+          "choices": [
+            "0 - No symptoms",
+            "1 - No significant disability",
+            "2 - Slight disability",
+            "3 - Moderate disability",
+            "4 - Moderately severe disability",
+            "5 - Severe disability",
+            "6 - Dead",
+            "Not recorded"
+          ]
+        },
+        "validation": null,
+        "conditional_logic": {
+          "depends_on": "Q28",
+          "operator": "equals",
+          "value": "Yes"
+        },
+        "variable_name": "mrs_6_months",
+        "variable_type": "categorical",
+        "variable_description": "mRS score at 6 months (if recorded).",
+        "validated_instrument": "mRS"
+      },
+      {
+        "id": "ssnap_demo_q31",
+        "question_code": "Q31",
+        "question_text": "Comments / data entry notes (optional)",
+        "question_type": "text_long",
+        "help_text": "Optional free-text notes for local use. Avoid patient-identifiable information.",
+        "clinical_guidance": "Free text is harder to analyse; keep it short and avoid PII.",
+        "required": false,
+        "options": null,
+        "validation": {
+          "max_length": 500
+        },
+        "conditional_logic": null,
+        "variable_name": "comments_notes",
+        "variable_type": "string",
+        "variable_description": "Optional free text notes (no PII).",
+        "validated_instrument": null
+      }
+    ]
+  }
+}
